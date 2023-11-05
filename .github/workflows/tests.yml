@@ -20,8 +20,11 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 16
+          distribution: 'adopt'
+          architecture: x64
 
       - name: Build and test
         run: ./gradlew clean test --info --stacktrace
+
 
 
