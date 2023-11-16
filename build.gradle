@@ -18,6 +18,17 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Hinzufügen von Spring Data JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// Hinzufügen der H2-Datenbank
+	runtimeOnly 'com.h2database:h2'
+
+	//manuelles Hinzufügen von JPA-Abhängigkeit
+	implementation 'javax.persistence:javax.persistence-api:2.2'
+
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
