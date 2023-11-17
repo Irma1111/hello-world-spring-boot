@@ -1,7 +1,5 @@
-package de.htwberlin.webtech.controller;
+package de.htwberlin.webtech;
 
-import de.htwberlin.webtech.entity.Person;
-import de.htwberlin.webtech.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
