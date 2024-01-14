@@ -73,6 +73,12 @@ Copy code
 POST /api/tasks/{taskId}/complete
 Bitte beachten Sie, dass dies nur Beispiele sind, und Sie können die API entsprechend Ihren Anforderungen verwenden.
 
+Anmerkungen Fehlfunktionen:
+- Eigentlich sollte jeder User eine eigene To-Do-Liste haben.
+- Jedem Task in der To-Do-Liste sollte eine bestimmte userid zugewiesen werden, was jedoch nicht funktioniert.
+- Das CI/CD zu Render hat nicht funktioniert. Der Path wurde nicht angekommen und die Anwendung eines Dockerfiles
+funktionierte ebenfalls nicht, da weder die WSL 2 noch die Ubuntu-Installation funktionierten.
+- Daher wird eine H2-Datenbank und keine Postgre-SQL-Datenbank verwendet. 
 Lizenz
 Dieses Projekt steht unter der MIT-Lizenz. Weitere Informationen finden Sie in der Lizenzdatei.
 

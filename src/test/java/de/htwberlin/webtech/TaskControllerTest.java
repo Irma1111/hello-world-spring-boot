@@ -2,10 +2,10 @@ package de.htwberlin.webtech;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -18,35 +18,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TaskController.class)
 public class TaskControllerTest {
 
-    @InjectMocks
-    private TaskController taskController;
-
-    @Mock
-    private TaskService taskService;
-
+    @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private TaskService taskService;
 
     public TaskControllerTest() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testCreateTodo() throws Exception {
+    public void testCreateTodoWithPerson() throws Exception {
         Task task = new Task();
         task.setDescription("Buy groceries");
-        task.setCompleted(false);
+        Long personId = 1L;
 
-        when(taskService.createTask(task, 1L)).thenReturn(task);
+        when(taskService.createAndAssignTask(personId, task.getDescription())).thenReturn(task);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String taskJson = objectMapper.writeValueAsString(task);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/tasks?personId=1")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/tasks?personId=" + personId)
                         .contentType("application/json")
                         .content(taskJson))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("Buy groceries"));
     }
+
 
     @Test
     public void testGetAllTodos() throws Exception {

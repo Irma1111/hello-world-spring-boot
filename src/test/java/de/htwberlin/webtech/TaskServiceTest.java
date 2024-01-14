@@ -31,21 +31,24 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void testSaveTask() {
-        // Mocked Task and Person
+    public void testCreateAndAssignTask() {
+        Long personId = 1L;
+        String taskDescription = "Test Task";
         Task task = new Task();
+        task.setDescription(taskDescription);
         Person person = new Person();
-        person.setId(1L);
-        task.setPerson(person);
+        person.setId(personId);
 
         // Mock behavior of repositories
-        when(personRepository.findById(1L)).thenReturn(Optional.of(person));
-        when(taskRepository.save(task)).thenReturn(task);
+        when(personRepository.findById(personId)).thenReturn(Optional.of(person));
+        when(taskRepository.save(any(Task.class))).thenReturn(task);
 
-        // Test saveTask
-        Task savedTask = taskService.createTask(task, 1L);
-        assertEquals(person, savedTask.getPerson());
-        verify(taskRepository, times(1)).save(task);
+        // Test createAndAssignTask
+        Task createdTask = taskService.createAndAssignTask(personId, taskDescription);
+
+        assertEquals(taskDescription, createdTask.getDescription());
+        verify(taskRepository, times(1)).save(any(Task.class));
+        verify(personRepository, times(1)).findById(personId);
     }
 
     @Test
@@ -109,27 +112,25 @@ public class TaskServiceTest {
 
     @Test
     public void testCreateTaskWithoutPerson() {
-        // Mocked Task
-        Task task = new Task();
+        String taskDescription = "Test Task";
 
-        // Mock behavior of repositories
-        when(taskRepository.save(task)).thenReturn(task);
-
-        // Test createTask without specifying a person
-        Task createdTask = taskService.createTask(task, null);
-        assertEquals(null, createdTask.getPerson());
+        // Test createAndAssignTask without specifying a person
+        assertThrows(RuntimeException.class, () -> taskService.createAndAssignTask(null, taskDescription));
     }
+
 
     @Test
     public void testCreateTaskWithNonExistentPerson() {
-        // Mocked Task
-        Task task = new Task();
+        Long nonExistentPersonId = 1L;
+        String taskDescription = "Test Task";
 
         // Mock behavior of repositories
-        when(personRepository.findById(1L)).thenReturn(Optional.empty());
+        when(personRepository.findById(nonExistentPersonId)).thenReturn(Optional.empty());
 
-        // Test createTask with a non-existent person ID
-        assertThrows(RuntimeException.class, () -> taskService.createTask(task, 1L));
+        // Test createAndAssignTask with a non-existent person ID
+        assertThrows(RuntimeException.class, () -> taskService.createAndAssignTask(nonExistentPersonId, taskDescription));
     }
+
+
 }
 

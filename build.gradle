@@ -21,12 +21,12 @@ dependencies {
 
 	// Hinzufügen von Spring Data JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    testImplementation 'junit:4.13.1'
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 	testImplementation 'junit:junit:4.13.1'
 
 	// Hinzufügen der H2-Datenbank
 	runtimeOnly 'com.h2database:h2'
+
     //Hinzufügen der PostgresSQL-Datenbank "ToDoListDB"
 	runtimeOnly 'org.postgresql:postgresql'
 

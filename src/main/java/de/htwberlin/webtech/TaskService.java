@@ -12,7 +12,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    @Autowired  // Hier wird das personRepository injiziert
+    @Autowired
     private PersonRepository personRepository;
 
     public List<Task> findAll() {
