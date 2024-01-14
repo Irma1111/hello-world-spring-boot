@@ -1,21 +1,23 @@
 package de.htwberlin.webtech;
 
 import jakarta.persistence.*;
-import jakarta.persistence.OneToMany;
-import org.springframework.scheduling.config.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class User {
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String email;
 
-    @OneToMany(mappedBy = "person") // Angenommen, die Task-Klasse hat ein Feld 'person'
-    private List<Task> tasks; // Liste von To-Do-Listeneinträgen
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "person")
+    private List<Task> tasks;
+
+    /*@OneToMany(mappedBy = "person") // Angenommen, die Task-Klasse hat ein Feld 'person'
+    private List<Task> tasks; // Liste von To-Do-Listeneinträgen*/
 
     // Getter und Setter für id
     public Long getId() {
@@ -53,6 +55,13 @@ public class User {
         this.tasks = tasks;
     }
 
+    public void addTask(Task task) {
+        if (tasks == null) {
+            tasks = new ArrayList<>();
+        }
+        tasks.add(task);
+        task.setPerson(this);
+    }
     // Weitere Methoden nach Bedarf
 }
 
